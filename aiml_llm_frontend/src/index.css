@@ -1,0 +1,115 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700;800;900&family=Nunito:wght@400;600;700;800&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer utilities {
+  .animate-fadeIn {
+    animation: fadeIn 0.6s ease-out;
+  }
+
+  .animate-slideUp {
+    animation: slideUp 0.8s ease-out;
+  }
+
+  .animate-scaleIn {
+    animation: scaleIn 0.4s ease-out;
+  }
+
+  .animate-bounce-slow {
+    animation: bounceSlow 2s infinite;
+  }
+
+  .animate-shimmer {
+    animation: shimmer 2s infinite;
+  }
+
+  @keyframes fadeIn {
+    from {
+      opacity: 0;
+      transform: translateY(10px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  @keyframes slideUp {
+    from {
+      opacity: 0;
+      transform: translateY(20px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  @keyframes scaleIn {
+    from {
+      opacity: 0;
+      transform: scale(0.9);
+    }
+    to {
+      opacity: 1;
+      transform: scale(1);
+    }
+  }
+
+  @keyframes bounceSlow {
+    0%, 100% {
+      transform: translateY(0);
+    }
+    50% {
+      transform: translateY(-10px);
+    }
+  }
+
+  @keyframes shimmer {
+    0% {
+      transform: translateX(-100%);
+    }
+    100% {
+      transform: translateX(100%);
+    }
+  }
+
+  .from-peach-50 { --tw-gradient-from: #fff5f0; }
+  .from-peach-100 { --tw-gradient-from: #ffe8db; }
+  .from-peach-400 { --tw-gradient-from: #ffb088; }
+  .from-peach-500 { --tw-gradient-from: #ff9966; }
+  .to-peach-50 { --tw-gradient-to: #fff5f0; }
+  .to-peach-100 { --tw-gradient-to: #ffe8db; }
+  .to-peach-400 { --tw-gradient-to: #ffb088; }
+  .border-peach-100 { border-color: #ffe8db; }
+  .via-peach-500 { --tw-gradient-stops: var(--tw-gradient-from), #ff9966, var(--tw-gradient-to); }
+
+  .from-coral-50 { --tw-gradient-from: #fff0ed; }
+  .from-coral-100 { --tw-gradient-from: #ffe0d9; }
+  .from-coral-400 { --tw-gradient-from: #ff8b72; }
+  .from-coral-500 { --tw-gradient-from: #ff6b4a; }
+  .to-coral-50 { --tw-gradient-to: #fff0ed; }
+  .to-coral-100 { --tw-gradient-to: #ffe0d9; }
+  .to-coral-400 { --tw-gradient-to: #ff8b72; }
+  .border-coral-200 { border-color: #ffc4b5; }
+  .border-coral-300 { border-color: #ffa893; }
+  .bg-coral-600 { background-color: #e65533; }
+  .text-coral-600 { color: #e65533; }
+  .text-coral-500 { color: #ff6b4a; }
+
+  .from-yellow-50 { --tw-gradient-from: #fffef5; }
+  .to-yellow-50 { --tw-gradient-to: #fffef5; }
+  .bg-yellow-500 { background-color: #eab308; }
+
+  .bg-emerald-500 { background-color: #10b981; }
+
+  .border-3 { border-width: 3px; }
+  .scale-102 { transform: scale(1.02); }
+  .hover\:scale-102:hover { transform: scale(1.02); }
+}
+
+body {
+  font-family: 'Poppins', 'Nunito', system-ui, -apple-system, sans-serif;
+}

@@ -1,0 +1,549 @@
+# 📚 Reading Tutor API Documentation
+
+## Base URL
+```
+http://127.0.0.1:8000
+```
+
+## API Endpoints
+
+### 1. 🎯 Analyze Reading Performance
+
+**Endpoint:** `POST /api/analyze-reading`
+
+**Description:** Compare original text with what a child read and provide comprehensive feedback with AI-powered analysis.
+
+**Request Body:**
+```json
+{
+  "originalText": "The cat sat on the mat",
+  "spokenText": "The cat sit on the mat",
+  "includeVocabulary": true,
+  "includeGrammar": true
+}
+```
+
+**Request Parameters:**
+| Field | Type | Required | Default | Description |
+|-------|------|----------|---------|-------------|
+| `originalText` | string | ✅ Yes | - | The original text to be read |
+| `spokenText` | string | ✅ Yes | - | What the child actually read |
+| `includeVocabulary` | boolean | No | `true` | Include vocabulary analysis |
+| `includeGrammar` | boolean | No | `true` | Include grammar analysis |
+
+**Response:**
+```json
+{
+  "overallScore": 85.5,
+  "accuracy": 90.0,
+  "errors": [
+    {
+      "type": "grammar",
+      "original": "sat",
+      "spoken": "sit",
+      "correction": "sat",
+      "explanation": "Past tense verb 'sat' was read as present tense 'sit'"
+    }
+  ],
+  "vocabulary": [
+    {
+      "word": "sat",
+      "definition": "Past tense of sit",
+      "example": "The cat sat on the chair yesterday"
+    }
+  ],
+  "feedbackMessage": "Great job! You read 90% of the words correctly!",
+  "practiceItems": [
+    {
+      "text": "sat",
+      "comment": "Practice past tense verbs"
+    }
+  ]
+}
+```
+
+**cURL Example:**
+```bash
+curl -X POST "http://127.0.0.1:8000/api/analyze-reading" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "originalText": "The cat sat on the mat",
+    "spokenText": "The cat sit on the mat"
+  }'
+```
+
+**JavaScript Fetch Example:**
+```javascript
+const response = await fetch('http://127.0.0.1:8000/api/analyze-reading', {
+  method: 'POST',
+  headers: {
+    'Content-Type': 'application/json',
+  },
+  body: JSON.stringify({
+    originalText: 'The cat sat on the mat',
+    spokenText: 'The cat sit on the mat'
+  })
+});
+
+const data = await response.json();
+console.log(data);
+```
+
+---
+
+### 2. ✨ Generate Reading Content
+
+**Endpoint:** `POST /api/generate-content`
+
+**Description:** Create custom AI-generated reading passages for practice with comprehension questions and vocabulary.
+
+**Request Body:**
+```json
+{
+  "difficulty": "medium",
+  "topic": "animals",
+  "ageRange": "7-9",
+  "length": "short"
+}
+```
+
+**Request Parameters:**
+| Field | Type | Required | Default | Description |
+|-------|------|----------|---------|-------------|
+| [difficulty](file:///d:/projects/FastAPIBackend/routes/reading_routes.py#309-338) | string | No | `"medium"` | Difficulty level: `"easy"`, `"medium"`, or `"hard"` |
+| `topic` | string | No | `null` | Topic for the content (e.g., "animals", "space", "sports") |
+| `ageRange` | string | No | `null` | Target age range (e.g., "5-7", "7-9", "9-11") |
+| `length` | string | No | `"short"` | Content length: `"short"`, `"medium"`, or `"long"` |
+
+**Response:**
+```json
+{
+  "content": "The playful puppy ran through the park...",
+  "comprehensionQuestions": [
+    "What did the puppy do?",
+    "Where did the puppy run?"
+  ],
+  "vocabularyWords": [
+    {
+      "word": "playful",
+      "definition": "Full of fun and energy",
+      "example": "The playful kitten chased the ball"
+    }
+  ],
+  "difficulty": "medium",
+  "estimatedReadingTime": "2 minutes"
+}
+```
+
+**Alternative GET Endpoint:** `GET /api/generate-content`
+
+**Query Parameters:**
+```
+GET /api/generate-content?difficulty=medium&topic=animals&ageRange=7-9&length=short
+```
+
+**cURL Example:**
+```bash
+curl -X POST "http://127.0.0.1:8000/api/generate-content" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "difficulty": "medium",
+    "topic": "animals",
+    "ageRange": "7-9",
+    "length": "short"
+  }'
+```
+
+---
+
+### 3. 📖 Simplify Complex Text
+
+**Endpoint:** `POST /api/simplify-text`
+
+**Description:** Convert difficult texts into simpler versions for early readers while maintaining the original meaning.
+
+**Request Body:**
+```json
+{
+  "text": "The magnificent elephant traversed the savanna.",
+  "targetLevel": "Grade 1"
+}
+```
+
+**Request Parameters:**
+| Field | Type | Required | Default | Description |
+|-------|------|----------|---------|-------------|
+| [text](file:///d:/projects/FastAPIBackend/routes/reading_routes.py#177-211) | string | ✅ Yes | - | Text to simplify |
+| `targetLevel` | string | No | `"Grade 1"` | Target reading level (e.g., "Grade 1", "Grade 2", "Grade 3") |
+
+**Response:**
+```json
+{
+  "originalText": "The magnificent elephant traversed the savanna.",
+  "simplifiedText": "The big elephant walked across the grass.",
+  "targetLevel": "Grade 1",
+  "changesExplanation": "Replaced 'magnificent' with 'big', 'traversed' with 'walked', and 'savanna' with 'grass'"
+}
+```
+
+**cURL Example:**
+```bash
+curl -X POST "http://127.0.0.1:8000/api/simplify-text" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "text": "The magnificent elephant traversed the savanna.",
+    "targetLevel": "Grade 1"
+  }'
+```
+
+---
+
+### 4. 🌍 Translate Text
+
+**Endpoint:** `POST /api/translate`
+
+**Description:** Translate reading content for multilingual support with optional pronunciation guides.
+
+**Request Body:**
+```json
+{
+  "text": "The cat sat on the mat",
+  "targetLanguage": "Spanish",
+  "includePronunciation": true
+}
+```
+
+**Request Parameters:**
+| Field | Type | Required | Default | Description |
+|-------|------|----------|---------|-------------|
+| [text](file:///d:/projects/FastAPIBackend/routes/reading_routes.py#177-211) | string | ✅ Yes | - | Text to translate |
+| `targetLanguage` | string | ✅ Yes | - | Target language (e.g., "Spanish", "Hindi", "French") |
+| `includePronunciation` | boolean | No | `true` | Include pronunciation guide |
+
+**Response:**
+```json
+{
+  "originalText": "The cat sat on the mat",
+  "translatedText": "El gato se sentó en la alfombra",
+  "targetLanguage": "Spanish",
+  "pronunciation": "el GAH-toh seh sen-TOH en lah al-FOM-brah"
+}
+```
+
+**cURL Example:**
+```bash
+curl -X POST "http://127.0.0.1:8000/api/translate" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "text": "The cat sat on the mat",
+    "targetLanguage": "Spanish",
+    "includePronunciation": true
+  }'
+```
+
+---
+
+### 5. 💡 Get Personalized Reading Tips
+
+**Endpoint:** `POST /api/get-tips`
+
+**Description:** Generate personalized practice tips based on reading analysis results.
+
+**Request Body:**
+```json
+{
+  "overallScore": 85.5,
+  "accuracy": 90.0,
+  "errors": [
+    {
+      "type": "grammar",
+      "original": "sat",
+      "spoken": "sit"
+    }
+  ],
+  "vocabulary": [],
+  "feedbackMessage": "Great job!",
+  "practiceItems": []
+}
+```
+
+**Response:**
+```json
+{
+  "tips": [
+    "Practice past tense verbs with flashcards",
+    "Read books with simple past tense stories"
+  ],
+  "exercises": [
+    "Write 5 sentences using past tense verbs",
+    "Play a past tense verb matching game"
+  ],
+  "parentGuidance": "Encourage your child to practice past tense verbs in daily conversation"
+}
+```
+
+---
+
+### 6. ✅ Health Check
+
+**Endpoint:** `GET /api/health`
+
+**Description:** Check if the API is running properly.
+
+**Response:**
+```json
+{
+  "status": "healthy",
+  "service": "Reading Tutor API for Early Learners",
+  "version": "1.0.0"
+}
+```
+
+**cURL Example:**
+```bash
+curl "http://127.0.0.1:8000/api/health"
+```
+
+---
+
+### 7. 🌐 Get Supported Languages
+
+**Endpoint:** `GET /api/supported-languages`
+
+**Description:** List of languages supported for translation.
+
+**Response:**
+```json
+{
+  "languages": [
+    "Spanish", "French", "German", "Italian", "Portuguese",
+    "Hindi", "Tamil", "Telugu", "Kannada", "Bengali",
+    "Mandarin", "Japanese", "Korean", "Arabic", "Russian",
+    "Dutch", "Swedish", "Polish", "Turkish", "Vietnamese"
+  ],
+  "note": "Groq supports many more languages. These are common for early learners."
+}
+```
+
+---
+
+### 8. 📊 Get Difficulty Guide
+
+**Endpoint:** `GET /api/difficulty-guide`
+
+**Description:** Information about difficulty levels and age ranges.
+
+**Response:**
+```json
+{
+  "levels": {
+    "easy": {
+      "ageRange": "5-7 years",
+      "description": "Simple sentences, common words, present tense",
+      "wordCount": "3-5 words per sentence",
+      "examples": ["The cat is big.", "I like to play."]
+    },
+    "medium": {
+      "ageRange": "7-9 years",
+      "description": "Longer sentences, some complex words, varied tenses",
+      "wordCount": "8-12 words per sentence",
+      "examples": ["The curious cat climbed up the tall tree yesterday."]
+    },
+    "hard": {
+      "ageRange": "9-11 years",
+      "description": "Complex sentences, advanced vocabulary, varied structures",
+      "wordCount": "12+ words per sentence",
+      "examples": ["Despite feeling nervous, the determined student practiced diligently."]
+    }
+  }
+}
+```
+
+---
+
+## Error Handling
+
+All endpoints return standard HTTP status codes:
+
+| Status Code | Description |
+|-------------|-------------|
+| `200` | Success |
+| `400` | Bad Request (invalid parameters) |
+| `404` | Not Found (invalid endpoint) |
+| `500` | Internal Server Error |
+
+**Error Response Format:**
+```json
+{
+  "detail": "Error message describing what went wrong"
+}
+```
+
+**Example Error Response:**
+```json
+{
+  "detail": "Original text cannot be empty"
+}
+```
+
+---
+
+## CORS Configuration
+
+The API has CORS enabled for all origins (`*`), so you can call it from any frontend application.
+
+---
+
+## Interactive API Documentation
+
+FastAPI provides automatic interactive API documentation:
+
+- **Swagger UI:** [http://127.0.0.1:8000/docs](http://127.0.0.1:8000/docs)
+- **ReDoc:** [http://127.0.0.1:8000/redoc](http://127.0.0.1:8000/redoc)
+
+These interfaces allow you to:
+- View all endpoints
+- See request/response schemas
+- Test endpoints directly in the browser
+- Download OpenAPI specification
+
+---
+
+## Quick Start Integration
+
+### React/Next.js Example
+
+```javascript
+// api/readingTutor.js
+const API_BASE_URL = 'http://127.0.0.1:8000/api';
+
+export const analyzeReading = async (originalText, spokenText) => {
+  const response = await fetch(`${API_BASE_URL}/analyze-reading`, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({
+      originalText,
+      spokenText
+    })
+  });
+  
+  if (!response.ok) {
+    const error = await response.json();
+    throw new Error(error.detail);
+  }
+  
+  return await response.json();
+};
+
+export const generateContent = async (difficulty = 'medium', topic = null) => {
+  const response = await fetch(`${API_BASE_URL}/generate-content`, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({
+      difficulty,
+      topic,
+      length: 'short'
+    })
+  });
+  
+  if (!response.ok) {
+    const error = await response.json();
+    throw new Error(error.detail);
+  }
+  
+  return await response.json();
+};
+
+export const simplifyText = async (text, targetLevel = 'Grade 1') => {
+  const response = await fetch(`${API_BASE_URL}/simplify-text`, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({
+      text,
+      targetLevel
+    })
+  });
+  
+  if (!response.ok) {
+    const error = await response.json();
+    throw new Error(error.detail);
+  }
+  
+  return await response.json();
+};
+
+export const translateText = async (text, targetLanguage) => {
+  const response = await fetch(`${API_BASE_URL}/translate`, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({
+      text,
+      targetLanguage,
+      includePronunciation: true
+    })
+  });
+  
+  if (!response.ok) {
+    const error = await response.json();
+    throw new Error(error.detail);
+  }
+  
+  return await response.json();
+};
+```
+
+### Usage in Component
+
+```javascript
+import { analyzeReading, generateContent } from './api/readingTutor';
+
+function ReadingTutorComponent() {
+  const handleAnalyze = async () => {
+    try {
+      const result = await analyzeReading(
+        "The cat sat on the mat",
+        "The cat sit on the mat"
+      );
+      console.log('Analysis:', result);
+      // Display result.feedbackMessage, result.practiceItems, etc.
+    } catch (error) {
+      console.error('Error:', error.message);
+    }
+  };
+
+  const handleGenerateContent = async () => {
+    try {
+      const content = await generateContent('easy', 'animals');
+      console.log('Generated content:', content);
+      // Display content.content, content.comprehensionQuestions, etc.
+    } catch (error) {
+      console.error('Error:', error.message);
+    }
+  };
+
+  return (
+    <div>
+      <button onClick={handleAnalyze}>Analyze Reading</button>
+      <button onClick={handleGenerateContent}>Generate Content</button>
+    </div>
+  );
+}
+```
+
+---
+
+## Notes
+
+- All endpoints use JSON for request and response bodies
+- The API is powered by Groq's LLM (llama-3.3-70b-versatile model)
+- Response times may vary depending on the complexity of the request (typically 1-5 seconds)
+- Make sure the backend server is running before making requests
+- For production deployment, update the `API_BASE_URL` to your production server URL
